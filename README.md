@@ -1,6 +1,6 @@
 # Blagodem
 
-The service that provides accessibility conditions for disabled people in the urban environment of Nizhny Tagil (Russia).
+The service that provides accessibility conditions for disabled people in the urban environment in Nizhny Tagil (Russia).
 
 ## HLO and analogues review
 
