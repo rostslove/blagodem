@@ -9,3 +9,7 @@ Google doc: [HLO and analogues review](https://docs.google.com/document/d/1rJccr
 ## Use Cases
 
 Google folder: [WebProject](https://drive.google.com/drive/folders/1mRXeC3s-0ucUawbru0y0-oJmG0F2usDV?ths=true). Here you can leave your comment.
+
+##Persistence
+
+Google doc: [Persistence](https://docs.google.com/document/d/19RBRSVJPQpP-N5dVg5Lnb4UxCV9aSyAOEc1kEfPXpbs/edit?usp=sharing)
