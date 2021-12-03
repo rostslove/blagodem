@@ -13,3 +13,8 @@ Google folder: [WebProject](https://drive.google.com/drive/folders/1mRXeC3s-0ucU
 ## Persistence
 
 Google doc: [Persistence](https://docs.google.com/document/d/19RBRSVJPQpP-N5dVg5Lnb4UxCV9aSyAOEc1kEfPXpbs/edit?usp=sharing). Here you can leave your comment.
+
+## UI
+
+Google doc: [UI](https://docs.google.com/document/d/1fpFnZzxD5-7RhXhysvT50HM6GOWOibB6MQIa1ZpJQMs/edit?usp=sharing). Here you can leave your comment.
+
