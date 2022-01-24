@@ -55,20 +55,23 @@ public class RegController {
             return "registration-volunteer";
         }
 
-        final User userWithSameName = userRepo.findByEmail(email);
+        final User userWithSameName = userRepo.findByUsername(email);
         if (userWithSameName != null) {
             model.put("message", "Такой пользователь уже существует");
             return "registration-volunteer";
         }
         String date[] = birthdate.split("-");
         String encoded = passwordEncoder.encode(password);
+        User user = new User(email, encoded);
+        user.setRole("VOLUNTEER");
         Volunteer volunteer = new Volunteer(firstname, lastname, LocalDate.of(Integer.parseInt(date[0]),Integer.parseInt(date[1]), Integer.parseInt(date[2])), sex, city, phone, email, encoded);
         if (email.equals("mardyshkinrr@mail.ru")){
+            user.setRole("ADMIN");
             volunteer.setRole("ADMIN");
         }
-        userRepo.save(new User(email, encoded, "VOLUNTEER"));
+        userRepo.save(user);
         volunteerRepo.save(volunteer);
-        return "redirect:/blagodem/main";
+        return "redirect:/blagodem/login";
     }
 
     @PostMapping("/blagodem/registration-disabled")
@@ -89,15 +92,17 @@ public class RegController {
             return "registration-disabled";
         }
 
-        final User userWithSameName = userRepo.findByEmail(email);
+        final User userWithSameName = userRepo.findByUsername(email);
         if (userWithSameName != null) {
             model.put("message", "Такой пользователь уже существует");
             return "registration-disabled";
         }
         String date[] = birthdate.split("-");
         String encoded = passwordEncoder.encode(password);
+        User user = new User(email, encoded);
+        user.setRole("DISABLED");
+        userRepo.save(user);
         disabledRepo.save(new Disabled(firstname,lastname, LocalDate.of(Integer.parseInt(date[0]),Integer.parseInt(date[1]), Integer.parseInt(date[2])), sex, city, disease, dis_group, phone, email, encoded));
-        userRepo.save(new User(email, encoded, "DISABLED"));
         return "redirect:/blagodem/main";
     }
 }

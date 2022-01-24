@@ -13,8 +13,8 @@ public class User {
     private Long id;
 
     @NotNull
-    @Column(name="email")
-    private String email;
+    @Column(name="username")
+    private String username;
 
     @NotNull
     @Column(name="password")
@@ -23,14 +23,13 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    public User(String email, String password, String role) {
-        this.email = email;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
-        this.role = role;
+        this.role = null;
     }
 
     public User() {
-
     }
 
     public Long getId() {
@@ -41,12 +40,12 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String email) {
+        this.username = username;
     }
 
     public String getPassword() {

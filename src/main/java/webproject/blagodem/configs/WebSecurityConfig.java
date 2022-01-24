@@ -10,7 +10,6 @@ import webproject.blagodem.repo.UserRepo;
 import webproject.blagodem.services.UserDetailServiceImpl;
 
 @Configuration
-@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -24,14 +23,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/blagodem/login")
-                .loginProcessingUrl("/blagodem/login")
                 .successForwardUrl("/blagodem/main")
-                .failureForwardUrl("/blagodem/login")
                 .permitAll()
                 .and()
                 .logout().permitAll()
                 .and()
-                .rememberMe();
+                .rememberMe()
+                .and()
+                .httpBasic();
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }

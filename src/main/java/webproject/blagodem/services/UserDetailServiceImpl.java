@@ -20,9 +20,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            webproject.blagodem.entities.User user = userRepo.findByEmail(username);
+            webproject.blagodem.entities.User user = userRepo.findByUsername(username);
             if (user != null) {
-                return User.withUsername(user.getEmail())
+                return User.withUsername(user.getUsername())
                         .password(user.getPassword())
                         .roles(user.getRole())
                         .build();
