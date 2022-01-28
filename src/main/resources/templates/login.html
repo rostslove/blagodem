@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Вход в Blagodem</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        .title1{
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
 <div th:if="${param.error}">
@@ -11,11 +17,29 @@
 <div th:if="${param.logout}">
     Вы вышли из профиля.
 </div>
-<form th:action="@{/blagodem/login}" method="post">
-    <div><label> Email : <input type="text" name="username"/> </label></div>
-    <div><label> Пароль: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Войти"/></div>
-</form>
-<p><a th:href="@{/blagodem/choose}">Регистрация</a></p>
+<div class="container mt-5">
+    <h1 class="title1">Войдите в систему Blagodem</h1>
+    <form th:action="@{/blagodem/login}" method="post">
+        <div class="col-12">
+            <label for="username" class="form-label">Email</label>
+            <input type="email" class="form-control" id="username" name="username" required="">
+            <div class="invalid-feedback">
+                Введите корректный адрес электронной почты.
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label for="password" class="form-label">Пароль</label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="" required="">
+            <div class="invalid-feedback">
+                Придумайте пароль.
+            </div>
+            <label class="form-label"></label>
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Войти</button>
+        </div>
+    </form>
+    <p><a th:href="@{/blagodem/choose}">Регистрация</a></p>
+</div>
 </body>
 </html>
+

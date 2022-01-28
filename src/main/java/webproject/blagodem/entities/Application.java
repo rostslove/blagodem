@@ -1,11 +1,13 @@
 package webproject.blagodem.entities;
 
 import com.sun.istack.NotNull;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity(name = "application")
 @Table(name = "APPLICATION")
+@Data
 public class Application {
 
     @Id
@@ -14,15 +16,19 @@ public class Application {
     private Long id;
 
     @NotNull
+    @Column(name = "address")
+    private String address;
+
+    @NotNull
     @Column(name = "text")
     private String text;
 
-    @Column(name = "file")
-    private String file;
+    @OneToOne
+    private File file;
 
     @NotNull
-    @Column(name = "disabled")
-    private Long disabled;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     @NotNull
     @Column(name = "status")
@@ -30,54 +36,5 @@ public class Application {
 
     public Application() {
     }
-
-    public Application(final String text,
-                       final String file,
-                       final Long disabled,
-                       final String status) {
-        this.text = text;
-        this.file = file;
-        this.disabled = disabled;
-        this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
-    public Long getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(Long disabled) {
-        this.disabled = disabled;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
+

@@ -5,7 +5,7 @@
     <title>Главная страница</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <style>
-        .title1{
+        .title1 {
             text-align: left;
         }
     </style>
@@ -13,45 +13,87 @@
 <body>
 <header th:insert="blocks/header :: header"></header>
 
-<form th:if="${user.getRole().equals('ADMIN')}" th:action="@{/blagodem/main}" th:name="application" method="post">
-    <div class="container mt-5" th:if="${user.getRole().equals('ADMIN')}">
-        <div class="col-sm-6">
-            <label for="status" class="form-label">Выберите статус заявки</label>
-            <select class="form-select" name="status" id="status" required="">
-                <option value="">Выберите статус</option>
-                <option value="Не подтверждено">Не подтверждено</option>
-                <option value="В обработке">В обработке</option>
-                <option value="Отклонено">Отклонено</option>
-                <option value="Выполнено">Выполнено</option>
-            </select>
-            <div class="invalid-feedback">
-                Выберите статус заявки
-            </div>
+<h1>Добро пожаловать в Blagodem!</h1>
+<h2>Помоги сделать городскую среду доступнее для всех!</h2>
+
+
+<class th:if="${user != null}">
+    <class th:if="${user.getRole().equals('ADMIN')}">
+        <div class="container" th:if="${requests != null}">
+            <h3 class="mb-0">Запросы волонтера</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Имя пользователя</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col">Волонтер</th>
+                    <th scope="col">Оценка</th>
+                    <th scope="col">Изменить статус</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="request : ${requests}">
+                    <td th:text="${request.getDisabled().getEmail()}"></td>
+                    <td th:text="${request.getStatus()}"></td>
+                    <td th:if="${request.getVolunteer() != null}"
+                        th:text="${request.getVolunteer().getFirstname()} + ' ' + ${request.getVolunteer().getLastname()}"></td>
+                    <td th:unless="${request.getVolunteer() != null}">Пока не назначено</td>
+                    <td th:if="${request.getRating() != null}" th:text="${request.getRating().getGrade()}"></td>
+                    <td th:unless="${request.getRating() != null}">Нет оценки</td>
+                    <td>
+                        <form class="form-control" th:action="@{'/blagodem/request/' + ${request.getId()} + '/changeStatus'}" method="post">
+                            <label for="status" class="form-label">Выберите статус запроса волонтера</label>
+                            <select class="form-select" name="status" id="status" required="">
+                                <option th:each="st : ${statuses}" th:value="${st}" th:selected="${st.equals(request.getStatus())}"><span th:text="${st}"></span></option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Выберите статус запроса волонтера
+                            </div>
+                            <input type="submit"  class="btn btn-dark" value="Изменить">
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
-    </div>
-        <label class="form-label"></label>
-        <button class="w-100 btn btn-primary btn-lg" type="submit">Подтвердить</button>
-    </div>
-</form>
+    </class>
 
-
-<form th:if="${user.getRole().equals('ADMIN')}" th:action="@{/blagodem/main}" th:name="request" method="post">
-    <div class="container mt-5" th:if="${user.getRole().equals('ADMIN')}">
-        <div class="col-sm-6">
-            <label for="status-v" class="form-label">Выберите статус запроса волонтера</label>
-            <select class="form-select" name="status" id="status-v" required="">
-                <option value="">Выберите статус</option>
-                <option value="Не подтвержден">Не подтверждено</option>
-                <option value="В обработке">В обработке</option>
-                <option value="Отклонено">Отклонено</option>
-                <option value="Выполнено">Выполнено</option>
-            </select>
-            <div class="invalid-feedback">
-                Выберите статус запроса волонтера
-            </div>
+    <class th:if="${user.getRole().equals('ADMIN')}">
+        <div class="container" th:if="${applications != null}">
+            <h3 class="mb-0">Активные обращения</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Адрес</th>
+                    <th scope="col">Описание</th>
+                    <th scope="col">Ссылка на файл</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col">Изменить статус</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="app : ${applications}">
+                    <td th:text="${app.getAddress()}"></td>
+                    <td th:text="${app.getText()}"></td>>
+                    <td th:if="${!app.getFile().getFileType().equals('application/octet-stream')}"> <a th:href="@{'/blagodem/download/' + ${app.getFile().getId()}}"><span th:text="${app.getFile().getFileName()}"></span></a></td>
+                    <td th:unless="${!app.getFile().getFileType().equals('application/octet-stream')}">Нет файла</td>
+                    <td th:text="${app.getStatus()}"></td>
+                    <td>
+                        <form class="form-control" th:action="@{'/blagodem/application/' + ${app.getId()} + '/changeStatus'}" method="post">
+                            <label for="status_a" class="form-label">Выберите статус запроса волонтера</label>
+                            <select class="form-select" name="status_a" id="status_a" required="">
+                                <option th:each="st : ${statuses}" th:value="${st}" th:selected="${st.equals(app.getStatus())}"><span th:text="${st}"></span></option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Выберите статус запроса волонтера
+                            </div>
+                            <input type="submit" class="btn btn-dark" value="Изменить">
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
-</form>
-
+    </class>
+</class>
 </body>

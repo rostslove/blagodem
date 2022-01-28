@@ -2,29 +2,28 @@ package webproject.blagodem.contollers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import webproject.blagodem.entities.Application;
-import webproject.blagodem.entities.Disabled;
-import webproject.blagodem.entities.Volunteer;
-import webproject.blagodem.repo.ApplicationRepo;
-import webproject.blagodem.repo.DisabledRepo;
-import webproject.blagodem.repo.RequestRepo;
-import webproject.blagodem.repo.VolunteerRepo;
+import webproject.blagodem.entities.*;
+import webproject.blagodem.repo.*;
+import webproject.blagodem.utils.ImageUtil;
+import webproject.blagodem.utils.Statuses;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/blagodem/main")
 public class MainController {
 
     @Autowired
-    private DisabledRepo disabledRepo;
-
-    @Autowired
-    private VolunteerRepo volunteerRepo;
+    private UserRepo userRepo;
 
     @Autowired
     private ApplicationRepo applicationRepo;
@@ -34,15 +33,30 @@ public class MainController {
 
     @GetMapping
     public String showMainPage(Model model, Principal principal){
-        String email = principal.getName();
-        Disabled disabled = disabledRepo.findByEmail(email);
-        Volunteer volunteer = volunteerRepo.findByEmail(email);
-        if(disabled != null) {
-            model.addAttribute("user", disabled);
+        User user = userRepo.findByUsername(principal.getName());
+        if(user!= null) {
+            model.addAttribute("user", user);
         }
-        if(volunteer != null) {
-            model.addAttribute("user", volunteer);
+        if (user.getRole().equals("ADMIN")) {
+            model.addAttribute("user", user);
+            return showAdminPanel(model);
         }
+        return "main";
+    }
+
+    private String showAdminPanel(Model model) {
+        List<Request> requests = new ArrayList<>();
+        for (Request request : requestRepo.findAll()) {
+            requests.add(request);
+        }
+        List<Application> applications = new ArrayList<>();
+        for (Application application : applicationRepo.findAll()) {
+            applications.add(application);
+        }
+        model.addAttribute("requests", requests);
+        model.addAttribute("applications", applications);
+        model.addAttribute("statuses",Arrays.stream(Statuses.values()).map(Statuses::getName).collect(Collectors.toList())) ;
+        model.addAttribute("imgUtil", new ImageUtil());
         return "main";
     }
 }

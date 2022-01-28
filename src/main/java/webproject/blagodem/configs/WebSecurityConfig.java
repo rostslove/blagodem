@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import webproject.blagodem.repo.UserRepo;
 import webproject.blagodem.services.UserDetailServiceImpl;
 
@@ -23,7 +24,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/blagodem/login")
-                .successForwardUrl("/blagodem/main")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/blagodem/main", true)
                 .permitAll()
                 .and()
                 .logout().permitAll()
